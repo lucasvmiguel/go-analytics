@@ -1,0 +1,14 @@
+COMMANDS:
+  DOWNLOAD IMAGE:   sudo docker pull [NAME]
+  RUN IMAGE:        sudo docker run -i -t [NAME] /bin/bash
+  SHOW IMAGES:      sudo docker images
+  CREATE IMAGE:     sudo docker build -t=[NAME] .
+  LIST CONTAINERS:  sudo docker ps
+  KILL CONTAINER:   sudo docker kill [CONTAINER_ID]
+  GET IN TERMINAL:  sudo docker exec -it [CONTAINER_ID] bash
+
+SCRIPTS IN DOCKERFILE:
+  BEGIN FROM IMAGE:               FROM golang
+  COPY FROM LOCAL TO CONTAINER:   ADD . /home/lucas/.gvm/pkgsets/go1.5/global/src/teste
+  RUN COMMAND ON TERMINAL:        RUN echo 'hello world'
+  EXPOSE PORT:                    EXPOSE 6666

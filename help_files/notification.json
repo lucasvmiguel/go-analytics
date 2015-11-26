@@ -1,0 +1,11 @@
+{
+  "title": "teste title",
+  "tag1": "teste tag1",
+  "tag2": "teste tag2",
+  "tag3": "teste tag3",
+  "info": "teste info",
+  "relevance": 2,
+  "transaction" : "transaction teste",
+  "transactionResult": true,
+  "company": 1
+}

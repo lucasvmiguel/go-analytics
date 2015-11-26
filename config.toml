@@ -1,6 +1,21 @@
+[develop]
+  debugger = true
+  recovery = true
 [develop.api]
   port = ":6969"
   version = "v1"
-[production.api]
-  port = ":8888"
-  version = "v1"
+[develop.db.standard]
+  dbname = "go-analytics"
+  addr = "lucas:lucas@localhost:27017/go-analytics"
+  username = "root"
+  password = "root"
+[develop.db.metric]
+  dbname = "go-analytics"
+  addr = "http://localhost:8086"
+  username = "root"
+  password = "root"
+[develop.db.session]
+  dbname = "go-analytics"
+  addr = "http://localhost:8086"
+  username = "root"
+  password = "root"
