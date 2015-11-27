@@ -5,7 +5,9 @@
   "tag3": "teste tag3",
   "info": "teste info",
   "relevance": 2,
+  "type": 4,
+  "isTransaction": true,
   "transaction" : "transaction teste",
   "transactionResult": true,
-  "company": 1
+  "company": "123456"
 }

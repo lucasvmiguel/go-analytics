@@ -4,6 +4,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/lucasvmiguel/go-analytics/controllers"
+	"github.com/lucasvmiguel/go-analytics/controllers/websocket"
 )
 
 func Start(debugger bool, recovery bool, version string, port string) {
@@ -20,7 +21,7 @@ func Start(debugger bool, recovery bool, version string, port string) {
 	r.POST("/"+version+"/auth", controllers.AccessController)
 	r.Use(controllers.AuthentificationController)
 	r.POST("/"+version+"/notification", controllers.NotificationController)
-	r.GET("/"+version+"/ws", controllers.WebsocketController)
+	r.GET("/"+version+"/ws", websocket.WebsocketController)
 
 	err := r.Run(port)
 	if err != nil {

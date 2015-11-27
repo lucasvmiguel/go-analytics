@@ -3,9 +3,16 @@ package model
 import "time"
 
 const (
-	High   = 3
-	Medium = 2
-	Low    = 1
+	HIGH   = 3
+	MEDIUM = 2
+	LOW    = 1
+)
+
+const (
+	ERROR   = 4
+	WARNING = 3
+	INFO    = 2
+	LOG     = 1
 )
 
 type Notification struct {
@@ -15,9 +22,11 @@ type Notification struct {
 	Tag3              string    `json:"tag3"`
 	Info              string    `json:"info"`
 	Relevance         uint8     `json:"relevance"`
+	Type              uint8     `json:"type"`
+	IsTransaction     bool      `json:"isTransaction"`
 	Transaction       string    `json:"transaction"`
 	TransactionResult bool      `json:"transactionResult"`
-	Company           uint      `json:"company"`
+	Company           string    `json:"company"`
 	Time              time.Time `json:"time"`
 }
 
@@ -29,6 +38,8 @@ func (n *Notification) ToMapString() map[string]interface{} {
 		"tag3":              n.Tag3,
 		"info":              n.Info,
 		"relevance":         n.Relevance,
+		"type":              n.Type,
+		"isTransaction":     n.Transaction,
 		"transaction":       n.Transaction,
 		"transactionResult": n.TransactionResult,
 		"company":           n.Company,

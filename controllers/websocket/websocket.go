@@ -1,4 +1,4 @@
-package controllers
+package websocket
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/lucasvmiguel/go-analytics/model"
 )
 
 var wsupgrader = websocket.Upgrader{
@@ -32,4 +33,8 @@ func wshandler(w http.ResponseWriter, r *http.Request) {
 
 func WebsocketController(c *gin.Context) {
 	wshandler(c.Writer, c.Request)
+}
+
+func Send(noti model.Notification) {
+
 }

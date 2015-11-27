@@ -3,19 +3,23 @@ package standard
 import (
 	"github.com/Sirupsen/logrus"
 
-	"gopkg.in/mgo.v2"
+	"gopkg.in/redis.v3"
 )
 
 const NAME_TABLE = "companies"
 
-var collection *mgo.Collection
+var client *redis.Client
 
 func Start(addr string, dbname string, username string, password string) {
-	session, err := mgo.Dial(addr)
+
+	client := redis.NewClient(&redis.Options{
+		Addr:     addr,
+		Password: password,
+		DB:       0,
+	})
+
+	_, err := client.Ping().Result()
 	if err != nil {
 		logrus.Panic("connect to database standard fail")
 	}
-
-	collection = session.DB(dbname).C(NAME_TABLE)
-	logrus.Info("connected to standard database!")
 }

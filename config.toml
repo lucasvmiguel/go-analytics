@@ -6,7 +6,7 @@
   version = "v1"
 [develop.db.standard]
   dbname = "go-analytics"
-  addr = "lucas:lucas@localhost:27017/go-analytics"
+  addr = "localhost:6379"
   username = "root"
   password = "root"
 [develop.db.metric]

@@ -3,27 +3,23 @@ package standard
 import (
 	"fmt"
 
-	"gopkg.in/mgo.v2/bson"
-
 	"github.com/Sirupsen/logrus"
-
 	"github.com/lucasvmiguel/go-analytics/model"
 )
 
 func MockCompany() {
-	err := collection.Insert(&model.Company{1, "Lucas", "123456"})
+	err := client.Set("lucas", "123456", 0)
 	if err != nil {
 		fmt.Println(err)
 	}
 }
 
-func GetCompany(id uint) model.Company {
-	result := model.Company{}
+func GetCompanyName(key string) model.Company {
 
-	err := collection.Find(bson.M{"ID": id}).One(&result)
+	val, err := client.Get(key).Result()
 	if err != nil {
 		logrus.Error("can't find company")
 	}
 
-	return result
+	return model.Company{}
 }
