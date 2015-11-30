@@ -7,7 +7,6 @@ import (
 	"github.com/lucasvmiguel/go-analytics/api"
 
 	db_metric "github.com/lucasvmiguel/go-analytics/db/metric"
-	db_standard "github.com/lucasvmiguel/go-analytics/db/standard"
 
 	"github.com/spf13/viper"
 )
@@ -29,12 +28,12 @@ func main() {
 		logrus.Panic("You need set the enviroment")
 	}
 
-	db_standard.Start(
-		viper.GetString(environment+".db.standard.addr"),
-		viper.GetString(environment+".db.standard.dbname"),
-		viper.GetString(environment+".db.standard.username"),
-		viper.GetString(environment+".db.standard.password"),
-	)
+	// db_standard.Start(
+	// 	viper.GetString(environment+".db.standard.addr"),
+	// 	viper.GetString(environment+".db.standard.dbname"),
+	// 	viper.GetString(environment+".db.standard.username"),
+	// 	viper.GetString(environment+".db.standard.password"),
+	// )
 
 	db_metric.Start(
 		viper.GetString(environment+".db.metric.addr"),

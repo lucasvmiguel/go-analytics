@@ -3,8 +3,8 @@ package standard
 import (
 	"fmt"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/lucasvmiguel/go-analytics/model"
+	"github.com/spf13/viper"
 )
 
 func MockCompany() {
@@ -15,11 +15,13 @@ func MockCompany() {
 }
 
 func GetCompanyName(key string) model.Company {
+	company := model.Company{}
 
-	val, err := client.Get(key).Result()
-	if err != nil {
-		logrus.Error("can't find company")
+	c := viper.GetStringMap("companies")[key]
+
+	if c != nil {
+		company.Name = c.(map[string]interface{})["name"].(string)
+		company.Key = key
 	}
-
-	return model.Company{}
+	return company
 }

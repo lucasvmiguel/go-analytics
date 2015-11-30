@@ -1,21 +1,29 @@
+#https://github.com/toml-lang/toml
+
+[companies]
+  [companies.123456]
+    name = "first"
+  [companies.654321]
+    name = "second"
+
 [develop]
   debugger = true
   recovery = true
-[develop.api]
-  port = ":6969"
-  version = "v1"
-[develop.db.standard]
-  dbname = "go-analytics"
-  addr = "localhost:6379"
-  username = "root"
-  password = "root"
-[develop.db.metric]
-  dbname = "go-analytics"
-  addr = "http://localhost:8086"
-  username = "root"
-  password = "root"
-[develop.db.session]
-  dbname = "go-analytics"
-  addr = "http://localhost:8086"
-  username = "root"
-  password = "root"
+  [develop.api]
+    port = ":6969"
+    version = "v1"
+  [develop.db.standard]
+    dbname = "go-analytics"
+    addr = "http://127.0.1.1:808"
+    username = "root"
+    password = "root"
+  [develop.db.metric]
+    dbname = "go-analytics"
+    addr = "http://localhost:8086"
+    username = "lukita"
+    password = "lukita"
+  [develop.db.session]
+    dbname = "go-analytics"
+    addr = "http://127.0.1.1:8082"
+    username = "root"
+    password = "root"

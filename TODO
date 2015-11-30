@@ -1,1 +1,1 @@
-config container redis
+Verificar por que não está salvando vários registros ao mesmo tempo

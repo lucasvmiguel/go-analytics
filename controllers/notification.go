@@ -20,7 +20,7 @@ func NotificationController(c *gin.Context) {
 
 	err := json.Unmarshal([]byte(body), &notification)
 	if err != nil {
-		logrus.Info("error to serialize notification")
+		logrus.Error("error to serialize notification")
 		c.AbortWithStatus(422)
 		return
 	}
@@ -30,8 +30,13 @@ func NotificationController(c *gin.Context) {
 }
 
 func saveRoutine(noti model.Notification) {
-	noti.Company = standard.GetCompanyName(noti.Company)
-	if noti
+	noti.Company = standard.GetCompanyName(noti.Company).Name
+
+	if noti.Company == "" {
+		logrus.Error("error to find company")
+		return
+	}
+
 	go metric.SaveNotification(noti)
 
 	if noti.Type == model.ERROR && noti.Relevance == model.HIGH {

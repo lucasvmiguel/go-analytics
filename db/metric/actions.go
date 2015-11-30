@@ -26,6 +26,7 @@ func SaveNotification(noti model.Notification) {
 	err = clientDB.Client.Write(clientDB.BP)
 	if err != nil {
 		logrus.Error("error to write new notification")
+		return
 	}
 	logrus.Info("notification writed")
 }
