@@ -30,9 +30,12 @@ containers_pull:
 	@sudo docker pull tutum/influxdb
 	@sudo docker pull bitnami/redis
 	@sudo docker pull grafana/grafana
+	@sudo docker pull tutum/grafana
 	@sudo docker run --name docker_data --volume /datafolder ubuntu true
 
 containers_run:
 	@sudo docker run -d -p 8083:8083 -p 8086:8086 -e PRE_CREATE_DB="go-analytics" --volumes-from docker_data tutum/influxdb:latest
-	@sudo docker run -d -p 3000:3000 --volumes-from docker_data grafana/grafana
+	#http://docs.grafana.org/installation/configuration/
+	@sudo docker run -d -p 3000:3000 --volumes-from docker_data -e GF_SECURITY_ADMIN_PASSWORD=admin -e GF_SECURITY_ADMIN_USER=admin grafana/grafana
+	#@sudo docker run -d -p 80:80 -e INFLUXDB_PROTO=http -e INFLUXDB_HOST=localhost -e INFLUXDB_PORT=8086 -e INFLUXDB_NAME=go-analytics -e HTTP_USER=admin -e HTTP_PASS=admin -e INFLUXDB_USER=root -e INFLUXDB_PASS=root -e INFLUXDB_IS_GRAFANADB=true --volumes-from docker_data tutum/grafana
 	#@sudo docker run -d bitnami/redis
