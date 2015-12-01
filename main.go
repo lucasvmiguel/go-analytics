@@ -28,13 +28,6 @@ func main() {
 		logrus.Panic("You need set the enviroment")
 	}
 
-	// db_standard.Start(
-	// 	viper.GetString(environment+".db.standard.addr"),
-	// 	viper.GetString(environment+".db.standard.dbname"),
-	// 	viper.GetString(environment+".db.standard.username"),
-	// 	viper.GetString(environment+".db.standard.password"),
-	// )
-
 	db_metric.Start(
 		viper.GetString(environment+".db.metric.addr"),
 		viper.GetString(environment+".db.metric.dbname"),

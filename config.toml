@@ -12,6 +12,14 @@
   [develop.api]
     port = ":6969"
     version = "v1"
+  [develop.websocket]
+    key = "123456"
+
+    [develop.websocket.condition]
+      #igual ou maior
+      relevance = 3 #HIGH
+      type = 3      #WARNING
+
   [develop.db.standard]
     dbname = "go-analytics"
     addr = "http://127.0.1.1:808"

@@ -6,29 +6,40 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/gorilla/websocket"
+	"github.com/spf13/viper"
 )
 
-const KEY_STUB = "123456"
-
 type WebSocketAuth struct {
-	Key string
+	Key string `json:"key"`
 }
 
-func Websocket(conn *websocket.Conn) (string, error) {
-	client := WebSocketAuth{}
-
+func Websocket(conn *websocket.Conn) (string, int, error) {
 	for {
-		_, msg, err := conn.ReadMessage()
+		msgType, msg, err := conn.ReadMessage()
 		if err != nil {
-			logrus.Error("Error to auth websocket, error to read message")
-			return "", errors.New("Error to auth websocket, error to read message")
+			return connectionError("Error to auth websocket, error to read message")
 		}
-		json.Unmarshal(msg, client)
 
-		if client.Key == KEY_STUB {
-			return client.Key, nil
+		client := WebSocketAuth{}
+		err = json.Unmarshal(msg, &client)
+		if err != nil {
+			return connectionError("invalid message received")
+		}
+
+		if isValidConnection(client.Key) {
+			conn.WriteMessage(msgType, []byte("connected"))
+			return client.Key, msgType, nil
 		} else {
-			return "", errors.New("invalid key" + client.Key)
+			return connectionError("invalid key received")
 		}
 	}
+}
+
+func isValidConnection(keySent string) bool {
+	return keySent == viper.GetString("develop.websocket.key")
+}
+
+func connectionError(err string) (string, int, error) {
+	logrus.Error(err)
+	return "", 0, errors.New(err)
 }

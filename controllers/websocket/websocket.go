@@ -1,18 +1,22 @@
 package websocket
 
 import (
+	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/lucasvmiguel/go-analytics/auth"
+	"github.com/lucasvmiguel/go-analytics/errors"
 	"github.com/lucasvmiguel/go-analytics/model"
 )
 
 type WebSocketClient struct {
-	ID   string
-	Conn *websocket.Conn
+	ID      string
+	MsgType int
+	Conn    *websocket.Conn
 }
 
 var clients []WebSocketClient
@@ -26,17 +30,17 @@ var wsupgrader = websocket.Upgrader{
 func wshandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := wsupgrader.Upgrade(w, r, nil)
 	if err != nil {
-		logrus.Error("Failed to set websocket upgrade: " + err.Error())
+		logrus.Error(errors.ErrUpgradeWebsocket.Error())
 		return
 	}
 
-	usr, err := auth.Websocket(conn)
+	usr, msgType, err := auth.Websocket(conn)
 
 	if err != nil {
-		logrus.Error("Error to auth websocket")
+		logrus.Error(errors.ErrAuthWebsocket.Error())
 	}
 
-	clients = append(clients, WebSocketClient{usr, conn})
+	clients = append(clients, WebSocketClient{usr, msgType, conn})
 }
 
 func WebsocketController(c *gin.Context) {
@@ -46,6 +50,12 @@ func WebsocketController(c *gin.Context) {
 
 func Send(noti model.Notification) {
 	for _, client := range clients {
-		client.Conn.WriteMessage(0, []byte("oi"))
+		noti.Time = time.Now()
+		notiJSON, err := json.Marshal(noti)
+		if err != nil {
+			logrus.Error(errors.ErrSerializeNotification.Error())
+			continue
+		}
+		client.Conn.WriteMessage(client.MsgType, notiJSON)
 	}
 }

@@ -9,7 +9,9 @@ import (
 	"github.com/lucasvmiguel/go-analytics/controllers/websocket"
 	"github.com/lucasvmiguel/go-analytics/db/metric"
 	"github.com/lucasvmiguel/go-analytics/db/standard"
+	"github.com/lucasvmiguel/go-analytics/errors"
 	"github.com/lucasvmiguel/go-analytics/model"
+	"github.com/spf13/viper"
 )
 
 func NotificationController(c *gin.Context) {
@@ -20,7 +22,7 @@ func NotificationController(c *gin.Context) {
 
 	err := json.Unmarshal([]byte(body), &notification)
 	if err != nil {
-		logrus.Error("error to serialize notification")
+		logrus.Error(errors.ErrSerializeNotification.Error())
 		c.AbortWithStatus(422)
 		return
 	}
@@ -33,13 +35,17 @@ func saveRoutine(noti model.Notification) {
 	noti.Company = standard.GetCompanyName(noti.Company).Name
 
 	if noti.Company == "" {
-		logrus.Error("error to find company")
+		logrus.Error(errors.ErrFindCompany.Error())
 		return
 	}
 
 	go metric.SaveNotification(noti)
+	needSend(noti)
+}
 
-	if noti.Type == model.ERROR && noti.Relevance == model.HIGH {
+func needSend(noti model.Notification) {
+	if noti.Type >= uint8(viper.GetInt("develop.websocket.condition.type")) &&
+		noti.Relevance >= uint8(viper.GetInt("develop.websocket.condition.relevance")) {
 		go websocket.Send(noti)
 	}
 }
