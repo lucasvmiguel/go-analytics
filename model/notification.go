@@ -39,7 +39,7 @@ func (n *Notification) ToMapString() map[string]interface{} {
 		"info":              n.Info,
 		"relevance":         n.Relevance,
 		"type":              n.Type,
-		"isTransaction":     n.Transaction,
+		"isTransaction":     n.IsTransaction,
 		"transaction":       n.Transaction,
 		"transactionResult": n.TransactionResult,
 		"company":           n.Company,
